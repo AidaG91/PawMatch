@@ -56,4 +56,4 @@ public class Evento {
     )
     private Set<Mascota> mascotasParticipantes = new HashSet<>();
 
-}
+ }
