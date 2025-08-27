@@ -18,5 +18,6 @@ public interface MascotaService {
 
     void deleteMascota(Long id);
 
-    List<MascotaResponseDTO> getMascotasByUsuarioId(Long usuarioId);
+    List<MascotaResponseDTO> getMascotasByPropietarioId(Long propietarioId);
+
 }

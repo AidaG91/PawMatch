@@ -7,10 +7,12 @@ import com.example.demo.model.Match;
 import com.example.demo.repository.MascotaRepository;
 import com.example.demo.repository.MatchRepository;
 import com.example.demo.service.interfaces.MatchService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class MatchServiceImpl implements MatchService {
 
     private final MatchRepository matchRepository;

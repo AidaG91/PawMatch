@@ -24,6 +24,5 @@ public class MascotaRequestDTO {
 
     private String descripcion;
 
-    @NotNull
     private Long usuarioId;
 }

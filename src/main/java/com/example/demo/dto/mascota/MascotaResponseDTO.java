@@ -1,6 +1,7 @@
 package com.example.demo.dto.mascota;
 
 import com.example.demo.enums.Sexo;
+import com.example.demo.model.Usuario;
 import lombok.Data;
 
 @Data
@@ -19,6 +20,7 @@ public class MascotaResponseDTO {
     private Sexo sexo;
 
     private String descripcion;
-
-    private Long usuario;
+// todo añadir más
+   // private Long usuario;
+    private Usuario propietario;
 }

@@ -4,8 +4,13 @@ import com.example.demo.dto.preferencias.PreferenciasRequestDTO;
 import com.example.demo.dto.preferencias.PreferenciasResponseDTO;
 import com.example.demo.dto.preferencias.PreferenciasUpdateDTO;
 
+import java.util.List;
+
 public interface PreferenciasService {
-    PreferenciasResponseDTO getPreferenciasByUsuarioId(Long usuarioId);
+
+    List<PreferenciasResponseDTO> getAllPreferencias();
+
+    PreferenciasResponseDTO getPreferenciasById(Long usuarioId);
 
     PreferenciasResponseDTO createPreferencias(PreferenciasRequestDTO preferenciasRequest);
 

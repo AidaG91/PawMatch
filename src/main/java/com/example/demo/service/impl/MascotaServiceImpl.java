@@ -8,19 +8,20 @@ import com.example.demo.model.Usuario;
 import com.example.demo.repository.MascotaRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.interfaces.MascotaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class MascotaServiceImpl implements MascotaService {
 
-    private final MascotaRepository mascotaRepository;
-    private final UsuarioRepository usuarioRepository;
+   @Autowired
+    MascotaRepository mascotaRepository;
 
-    public MascotaServiceImpl(MascotaRepository mascotaRepository, UsuarioRepository usuarioRepository) {
-        this.mascotaRepository = mascotaRepository;
-        this.usuarioRepository = usuarioRepository;
-    }
+   @Autowired
+   UsuarioRepository usuarioRepository;
 
     @Override
     public List<MascotaResponseDTO> getAllMascotas() {
@@ -39,18 +40,18 @@ public class MascotaServiceImpl implements MascotaService {
 
     @Override
     public MascotaResponseDTO createMascota(MascotaRequestDTO mascotaRequest) {
-        Usuario propietario = usuarioRepository.findById(mascotaRequest.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Propietario no encontrado."));
-
         Mascota mascota = new Mascota();
+
         mascota.setNombre(mascotaRequest.getNombre());
         mascota.setRaza(mascotaRequest.getRaza());
         mascota.setEspecie(mascotaRequest.getEspecie());
         mascota.setEdad(mascotaRequest.getEdad());
         mascota.setSexo(mascotaRequest.getSexo());
-        mascota.setPropietario(propietario);
+        mascota.setDescripcion(mascotaRequest.getDescripcion());
+// TODO AÑADIR MÁS
 
-        return mapToResponseDTO(mascotaRepository.save(mascota));
+        Mascota savedMascota = mascotaRepository.save(mascota);
+        return mapToResponseDTO(mascotaRepository.save(savedMascota));
     }
 
     @Override
@@ -59,13 +60,11 @@ public class MascotaServiceImpl implements MascotaService {
                 .orElseThrow(() -> new RuntimeException("Mascota no encontrada con id: " + id));
 
         if (mascotaUpdate.getNombre() != null) mascota.setNombre(mascotaUpdate.getNombre());
-        if (mascotaUpdate.getEspecie() != null) mascota.setEspecie(mascotaUpdate.getEspecie());
-        if (mascotaUpdate.getRaza() != null) mascota.setRaza(mascotaUpdate.getRaza());
         if (mascotaUpdate.getEdad() != null) mascota.setEdad(mascotaUpdate.getEdad());
-        if (mascotaUpdate.getSexo() != null) mascota.setSexo(mascotaUpdate.getSexo());
         if (mascotaUpdate.getDescripcion() != null) mascota.setDescripcion(mascotaUpdate.getDescripcion());
 
-        return mapToResponseDTO(mascotaRepository.save(mascota));
+        Mascota updatedMascota = mascotaRepository.save(mascota);
+        return mapToResponseDTO(updatedMascota);
     }
 
     @Override
@@ -77,19 +76,19 @@ public class MascotaServiceImpl implements MascotaService {
     }
 
     @Override
-    public List<MascotaResponseDTO> getMascotasByUsuarioId(Long usuarioId) {
-        return mascotaRepository.findByPropietario(usuarioId)
+    public List<MascotaResponseDTO> getMascotasByPropietarioId(Long propietarioId) {
+        return mascotaRepository.findByPropietarioId(propietarioId)
                 .stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<MascotaResponseDTO> getMascotasByUsuario(Long usuarioId) {
-        return mascotaRepository.findByPropietario(usuarioId)
-                .stream()
-                .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
-    }
+//    public List<MascotaResponseDTO> getMascotasByUsuario(Long usuarioId) {
+//        return mascotaRepository.findByPropietario(usuarioId)
+//                .stream()
+//                .map(this::mapToResponseDTO)
+//                .collect(Collectors.toList());
+//    }
 
     // Métodos auxiliares
     private MascotaResponseDTO mapToResponseDTO(Mascota mascota) {
@@ -100,8 +99,7 @@ public class MascotaServiceImpl implements MascotaService {
         dto.setRaza(mascota.getRaza());
         dto.setEdad(mascota.getEdad());
         dto.setSexo(mascota.getSexo());
-        //  TODO -
-        dto.setUsuario(mascota.getPropietario().getId());
+        dto.setPropietario(mascota.getPropietario());
         return dto;
     }
 }

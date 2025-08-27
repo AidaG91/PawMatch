@@ -9,10 +9,12 @@ import com.example.demo.repository.EventoRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.interfaces.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class EventoServiceImpl implements EventoService {
 
     @Autowired
