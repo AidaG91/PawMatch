@@ -2,8 +2,10 @@ package com.example.demo.util;
 
 import com.example.demo.enums.Sexo;
 import com.example.demo.model.Mascota;
+import com.example.demo.model.Preferencias;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.MascotaRepository;
+import com.example.demo.repository.PreferenciasRepository;
 import com.example.demo.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     MascotaRepository mascotaRepository;
+
+    @Autowired
+    PreferenciasRepository preferenciasRepository;
 
     @Override
     public void run(String... args){
@@ -58,6 +63,14 @@ public class DataInitializer implements CommandLineRunner {
 
         mascotaRepository.saveAll(List.of(mascota1));
 
+        // PREFERENCIAS
+        Preferencias preferencias1 = Preferencias.builder()
+                .usuario(usuarioRepository.findById(1L).orElse(null))
+                .raza("Labrador")
+                .edadMin(2)
+                .build();
+
+        preferenciasRepository.saveAll(List.of(preferencias1));
         System.out.println("+++++++++++++++++++++++++++++++++++ DATOS CARGADOS");
     }
 }
