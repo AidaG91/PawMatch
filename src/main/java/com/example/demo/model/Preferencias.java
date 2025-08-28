@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import com.example.demo.enums.Caracter;
 import com.example.demo.enums.Medida;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -52,6 +53,7 @@ public class Preferencias {
 
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    @JsonBackReference
     private Usuario usuario;
 
 }

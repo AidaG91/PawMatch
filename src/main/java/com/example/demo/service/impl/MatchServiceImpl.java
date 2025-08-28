@@ -7,6 +7,7 @@ import com.example.demo.model.Match;
 import com.example.demo.repository.MascotaRepository;
 import com.example.demo.repository.MatchRepository;
 import com.example.demo.service.interfaces.MatchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class MatchServiceImpl implements MatchService {
 
-    private final MatchRepository matchRepository;
-    private final MascotaRepository mascotaRepository;
+    @Autowired
+    private MatchRepository matchRepository;
 
-    public MatchServiceImpl(MatchRepository matchRepository, MascotaRepository mascotaRepository) {
-        this.matchRepository = matchRepository;
-        this.mascotaRepository = mascotaRepository;
-    }
+    @Autowired
+    private MascotaRepository mascotaRepository;
 
     @Override
     public List<MatchResponseDTO> getAllMatches() {
@@ -40,14 +39,14 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public MatchResponseDTO createMatch(MatchRequestDTO matchRequest) {
-        Mascota mascota1 = mascotaRepository.findById(matchRequest.getMascota1Id())
-                .orElseThrow(() -> new RuntimeException("Mascota 1 no encontrada."));
-        Mascota mascota2 = mascotaRepository.findById(matchRequest.getMascota2Id())
-                .orElseThrow(() -> new RuntimeException("Mascota 2 no encontrada."));
+        Mascota mascotaOrigen = mascotaRepository.findById(matchRequest.getMascotaOrigenId())
+                .orElseThrow(() -> new RuntimeException("Mascota Origen no encontrada."));
+        Mascota mascotaDestino = mascotaRepository.findById(matchRequest.getMascotaDestinoId())
+                .orElseThrow(() -> new RuntimeException("Mascota Destino no encontrada."));
 
         Match match = new Match();
-        match.setMascotaOrigen(mascota1);
-        match.setMascotaDestino(mascota2);
+        match.setMascotaOrigen(mascotaOrigen);
+        match.setMascotaDestino(mascotaDestino);
 
         return mapToResponseDTO(matchRepository.save(match));
     }
@@ -60,18 +59,22 @@ public class MatchServiceImpl implements MatchService {
         matchRepository.deleteById(id);
     }
 
-    @Override
-    public List<MatchResponseDTO> getMatchesByUsuario(Long usuarioId) {
-        return List.of();
-    }
+//    @Override
+//    public List<MatchResponseDTO> getMatchesByMascotaId(Long id) {
+//        return matchRepository.getMatchesByMascotaId(id)
+//                .stream()
+//                .map(this::mapToResponseDTO)
+//                .collect(Collectors.toList());
+//    }
 
     // Métodos auxiliares
     private MatchResponseDTO mapToResponseDTO(Match match) {
         MatchResponseDTO dto = new MatchResponseDTO();
         dto.setId(match.getId());
-        dto.setUsuario1Id(match.getMascotaOrigen().getPropietario().getId());
-        dto.setUsuario2Id(match.getMascotaOrigen().getPropietario().getId());
-        dto.setEsMutuo(match.getEsMutuo());
-        return dto;
+        dto.setMascotaOrigenId(match.getMascotaOrigen().getId());
+        dto.setMascotaDestinoId(match.getMascotaDestino().getId());
+        dto.setEstadoMatch(match.getEstado());
+        dto.setFechaMatch(match.getFechaMatch());
+            return dto;
     }
 }

@@ -2,14 +2,8 @@ package com.example.demo.util;
 
 import com.example.demo.enums.EstadoMatch;
 import com.example.demo.enums.Sexo;
-import com.example.demo.model.Chat;
-import com.example.demo.model.Mascota;
-import com.example.demo.model.Preferencias;
-import com.example.demo.model.Usuario;
-import com.example.demo.repository.ChatRepository;
-import com.example.demo.repository.MascotaRepository;
-import com.example.demo.repository.PreferenciasRepository;
-import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -32,6 +26,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     ChatRepository chatRepository;
+
+    @Autowired
+    MatchRepository matchRepository;
 
     @Override
     public void run(String... args){
@@ -67,11 +64,29 @@ public class DataInitializer implements CommandLineRunner {
                 .propietario(usuarioRepository.findById(1L).orElse(null))
                 .build();
 
-        mascotaRepository.saveAll(List.of(mascota1));
+        Mascota mascota2 = Mascota.builder()
+                .nombre("Pepe")
+                .edad(2)
+                .sexo(Sexo.MACHO)
+                .raza("Labrador")
+                .especie("Perro")
+                .propietario(usuarioRepository.findById(2L).orElse(null))
+                .build();
+
+        Mascota mascota3 = Mascota.builder()
+                .nombre("Rex")
+                .edad(5)
+                .sexo(Sexo.MACHO)
+                .raza("Pastor Alemán")
+                .especie("Perro")
+                .propietario(usuarioRepository.findById(2L).orElse(null))
+                .build();
+
+        mascotaRepository.saveAll(List.of(mascota1, mascota2, mascota3));
 
         // PREFERENCIAS
         Preferencias preferencias1 = Preferencias.builder()
-                .usuario(usuarioRepository.findById(1L).orElse(null))
+                .usuario(usuarioRepository.findById(user1.getId()).orElse(null))
                 .raza("Labrador")
                 .edadMin(2)
                 .build();
@@ -80,6 +95,20 @@ public class DataInitializer implements CommandLineRunner {
 
         // MATCH
 
+        Match match1 = Match.builder()
+                .mascotaOrigen(mascota1)
+                .mascotaDestino(mascota2)
+                .estado(EstadoMatch.CONFIRMADO)
+                //.fechaMatch()
+                .build();
+
+        Match match2 = Match.builder()
+                .mascotaOrigen(mascota1)
+                .mascotaDestino(mascota3)
+                .estado(EstadoMatch.PENDIENTE)
+                .build();
+
+        matchRepository.saveAll(List.of(match1, match2));
 
         // MENSAJE
 

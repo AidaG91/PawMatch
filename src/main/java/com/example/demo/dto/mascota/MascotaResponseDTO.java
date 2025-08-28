@@ -20,7 +20,6 @@ public class MascotaResponseDTO {
     private Sexo sexo;
 
     private String descripcion;
-// todo añadir más
-   // private Long usuario;
-    private Usuario propietario;
+
+    private Long propietarioId;
 }

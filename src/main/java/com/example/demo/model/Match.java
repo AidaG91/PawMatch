@@ -57,8 +57,6 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Boolean esMutuo = false;
 
     /**
      * Mascota que inicia el "like"
@@ -89,17 +87,17 @@ public class Match {
     @Column(name = "fecha_match", nullable = false, updatable = false)
     private LocalDateTime fechaMatch;
 
-    @AssertTrue(message = "Un match no puede ser consigo mismo")
-    private boolean isParValido() {
-        return mascotaOrigen != null && mascotaDestino != null &&
-                !mascotaOrigen.getId().equals(mascotaDestino.getId());
-    }
-
-    @PrePersist @PreUpdate
-    private void normalizarPar() {
-        if (mascotaOrigen == null || mascotaDestino == null) return;
-        Long id1 = mascotaOrigen.getId(), id2 = mascotaDestino.getId();
-        if (id1 == null || id2 == null) throw new IllegalStateException("Mascotas deben estar persistidas");
-        if (id1 > id2) { Mascota t = mascotaOrigen; mascotaOrigen = mascotaDestino; mascotaDestino = t; }
-    }
+//    @AssertTrue(message = "Un match no puede ser consigo mismo")
+//    private boolean isParValido() {
+//        return mascotaOrigen != null && mascotaDestino != null &&
+//                !mascotaOrigen.getId().equals(mascotaDestino.getId());
+//    }
+//
+//    @PrePersist @PreUpdate
+//    private void normalizarPar() {
+//        if (mascotaOrigen == null || mascotaDestino == null) return;
+//        Long id1 = mascotaOrigen.getId(), id2 = mascotaDestino.getId();
+//        if (id1 == null || id2 == null) throw new IllegalStateException("Mascotas deben estar persistidas");
+//        if (id1 > id2) { Mascota t = mascotaOrigen; mascotaOrigen = mascotaDestino; mascotaDestino = t; }
+//    }
 }

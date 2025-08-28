@@ -99,7 +99,7 @@ public class MascotaServiceImpl implements MascotaService {
         dto.setRaza(mascota.getRaza());
         dto.setEdad(mascota.getEdad());
         dto.setSexo(mascota.getSexo());
-        dto.setPropietario(mascota.getPropietario());
+        dto.setPropietarioId(mascota.getPropietario().getId());
         return dto;
     }
 }

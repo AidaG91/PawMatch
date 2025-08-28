@@ -14,5 +14,5 @@ public interface MatchService {
 
     void deleteMatch(Long id);
 
-    List<MatchResponseDTO> getMatchesByUsuario(Long usuarioId);
+//    List<MatchResponseDTO> getMatchesByMascotaId(Long mascotaId);
 }
